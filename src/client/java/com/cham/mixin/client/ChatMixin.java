@@ -4,7 +4,10 @@ import com.cham.CosmicpingsClient;
 import com.cham.Module.Render.HudUtil.PingData;
 import com.cham.Module.Render.HudUtil.PingHandler;
 import com.cham.Module.Util.DirectionalSoundInstance;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.ChatMessages;
 import net.minecraft.client.util.TextCollector;
 import net.minecraft.sound.SoundCategory;
@@ -79,7 +82,7 @@ public class ChatMixin {
 
                     if(PingHandler.getData().containsKey(actualName)) {
                         PingData data = PingHandler.getData().get(actualName);
-                        data.setAliveTime(100000);
+                        CosmicpingsClient.getINSTANCE().pingList.remove(data);
                     }
 
                     String world = PingHandler.worldName(client.player);
@@ -88,13 +91,14 @@ public class ChatMixin {
                         return;
                     }
 
+                    PingData data = new PingData(actualName, UUID.randomUUID(), d, UUID.randomUUID(), System.currentTimeMillis());
 
-                    PingData data = new PingData(actualName, UUID.randomUUID(), d, UUID.randomUUID(), 100);
                     PingHandler.getData().put(actualName, data);
 
                     playPingSound(client, data);
 
                     CosmicpingsClient.getINSTANCE().getPingList().add(data);
+
                 }
             }
         }

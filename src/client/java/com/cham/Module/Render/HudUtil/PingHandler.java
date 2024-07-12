@@ -34,9 +34,6 @@ public class PingHandler {
             for (PingData ping : CosmicpingsClient.getINSTANCE().getPingList()) {
                 ping.screenPos = MathHelper.project3Dto2D(ping.pos, modelViewMatrix, projectionMatrix);
             }
-
-            CosmicpingsClient.getINSTANCE().getPingList().removeIf(pingData -> pingData.aliveTime > 5000);
-
         }
     }
 
@@ -72,10 +69,9 @@ public class PingHandler {
 
         if (world != null) {
             for (PingData ping : CosmicpingsClient.getINSTANCE().getPingList()) {
-                ping.aliveTime++;
+                ping.aliveTime = Math.toIntExact(System.currentTimeMillis() - ping.spawnTime);
             }
-
-            CosmicpingsClient.getINSTANCE().getPingList().removeIf(pingData -> pingData.aliveTime > 4000);
+            CosmicpingsClient.getINSTANCE().getPingList().removeIf(pingData -> pingData.aliveTime > 30000);
         }
     }
 

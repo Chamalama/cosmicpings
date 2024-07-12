@@ -16,8 +16,8 @@ public class PingData {
     public Vector4f screenPos;
     public UUID hitEntity;
     public ItemStack itemStack;
-    public Integer spawnTime;
-    public Integer aliveTime;
+    public long spawnTime;
+    public long aliveTime;
 
 
     public PingData(String senderName, UUID senderId, Vec3d pos, UUID hitEntity, long spawnTime) {
@@ -27,9 +27,8 @@ public class PingData {
         this.prevPos = new Vector4f();
         this.currentPos = new Vector4f();
         this.hitEntity = hitEntity;
-        this.spawnTime = (int) spawnTime;
+        this.spawnTime = spawnTime;
         this.aliveTime = 0;
-
     }
 
     public void setAliveTime(Integer aliveTime) {

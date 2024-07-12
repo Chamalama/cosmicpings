@@ -63,7 +63,7 @@ public class PingHud implements HudRenderCallback {
                 continue;
             }
 
-            String timeText = (ping.aliveTime / 350) + " seconds ago";
+            String timeText = (int)(ping.aliveTime / 1000.0) + " seconds ago";
             int distanceTimeWidth = client.textRenderer.getWidth(timeText);
 
             stack.translate(-distanceTimeWidth / 2f, -6f, 0);

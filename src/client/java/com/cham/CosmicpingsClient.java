@@ -22,6 +22,7 @@ public class CosmicpingsClient implements ClientModInitializer {
 	public static List<UUID> cd = new ArrayList<>();
 
 	public static int timer = 0;
+	public static int clientTimer = 0;
 
 	@Override
 	public void onInitializeClient() {
