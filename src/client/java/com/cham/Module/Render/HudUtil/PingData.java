@@ -18,9 +18,10 @@ public class PingData {
     public ItemStack itemStack;
     public long spawnTime;
     public long aliveTime;
+    public Vector4f color;
 
 
-    public PingData(String senderName, UUID senderId, Vec3d pos, UUID hitEntity, long spawnTime) {
+    public PingData(String senderName, UUID senderId, Vec3d pos, UUID hitEntity, Vector4f color, long spawnTime) {
         this.senderName = senderName;
         this.senderId = senderId;
         this.pos = pos;
@@ -28,6 +29,7 @@ public class PingData {
         this.currentPos = new Vector4f();
         this.hitEntity = hitEntity;
         this.spawnTime = spawnTime;
+        this.color = color;
         this.aliveTime = 0;
     }
 

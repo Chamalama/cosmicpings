@@ -33,7 +33,7 @@ public class PingHud implements HudRenderCallback {
 
             stack.push();
 
-            Vector4f pingColor = new Vector4f(0, 0, 0.9F, 1.0F);
+            Vector4f pingColor = ping.color;
             int shadowBlack = ColorHelper.Argb.getArgb(135, 0, 0, 0);
 
             double distance = cameraPosVec.distanceTo(ping.pos);

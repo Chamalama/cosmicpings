@@ -14,6 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -56,6 +57,13 @@ public class ChatMixin {
 
             if(message.startsWith("[!]") && (isAlliance || isTruce)) {
 
+                Vector4f pingColor = new Vector4f();
+                if(isTruce) {
+                    pingColor = new Vector4f(0.0f, 0.9f, 0.09f, 1.0f);
+                }else{
+                    pingColor = new Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+                }
+
                 isAlliance = false;
                 isTruce = false;
 
@@ -91,7 +99,8 @@ public class ChatMixin {
                         return;
                     }
 
-                    PingData data = new PingData(actualName, UUID.randomUUID(), d, UUID.randomUUID(), System.currentTimeMillis());
+
+                    PingData data = new PingData(actualName, UUID.randomUUID(), d, UUID.randomUUID(), pingColor, System.currentTimeMillis());
 
                     PingHandler.getData().put(actualName, data);
 

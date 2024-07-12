@@ -2,10 +2,10 @@
 	"schemaVersion": 1,
 	"id": "cosmicpings",
 	"version": "${version}",
-	"name": "cosmicpings",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "CosmicPings",
+	"description": "Ping mod for Cosmic.",
 	"authors": [
-		"Me!"
+		"Mike"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",

@@ -13,14 +13,14 @@ public class Keybind {
     public static KeyBinding ping, tping;
 
     public static void register() {
-        ping = KeyBindingHelper.registerKeyBinding(new KeyBinding("ping",
+        ping = KeyBindingHelper.registerKeyBinding(new KeyBinding("Ping",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_P,
                 "CosmicPings"));
         CosmicpingsClient.keyMap.put(ping, new Ping());
 
 
-        tping = KeyBindingHelper.registerKeyBinding(new KeyBinding("truce_ping",
+        tping = KeyBindingHelper.registerKeyBinding(new KeyBinding("Truce Ping",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_L,
                 "CosmicPings"));
