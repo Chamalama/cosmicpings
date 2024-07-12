@@ -59,7 +59,7 @@ public class ChatMixin {
 
                 Vector4f pingColor = new Vector4f();
                 if(isTruce) {
-                    pingColor = new Vector4f(0.0f, 0.9f, 0.09f, 1.0f);
+                    pingColor = new Vector4f(0.0f, 0.9f, 0.9f, 1.0f);
                 }else{
                     pingColor = new Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
                 }
