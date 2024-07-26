@@ -5,6 +5,7 @@ import com.cham.Module.Keybind;
 import com.cham.Module.Mod;
 import com.cham.Module.Render.HudUtil.PingHandler;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.concurrent.Executors;
@@ -33,6 +34,11 @@ public class Ping extends Mod {
             int maxHealth = (int) client.player.getMaxHealth();
 
             String worldName = PingHandler.worldName(client.player);
+
+            if(worldName == null) {
+                client.player.sendMessage(Text.literal("This world is unavailable for pings!"));
+                return;
+            }
 
 
             if (!CosmicpingsClient.cd.contains(client.player.getUuid())) {

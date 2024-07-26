@@ -4,10 +4,7 @@ import com.cham.CosmicpingsClient;
 import com.cham.Module.Render.HudUtil.PingData;
 import com.cham.Module.Render.HudUtil.PingHandler;
 import com.cham.Module.Util.DirectionalSoundInstance;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.ChatMessages;
 import net.minecraft.client.util.TextCollector;
 import net.minecraft.sound.SoundCategory;
@@ -57,7 +54,7 @@ public class ChatMixin {
 
             if(message.startsWith("[!]") && (isAlliance || isTruce)) {
 
-                Vector4f pingColor = new Vector4f();
+                Vector4f pingColor;
                 if(isTruce) {
                     pingColor = new Vector4f(0.0f, 0.9f, 0.9f, 1.0f);
                 }else{

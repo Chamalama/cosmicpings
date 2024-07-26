@@ -54,7 +54,7 @@ public class PingHandler {
         }else if(worldKey.contains("adventure_demonic_realm-0")) {
             worldName = "Demonic-Realm";
         }else{
-            worldName = worldKey;
+            worldName = null;
         }
         return worldName;
     }
