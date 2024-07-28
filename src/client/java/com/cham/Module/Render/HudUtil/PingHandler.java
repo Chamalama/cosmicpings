@@ -1,6 +1,7 @@
 package com.cham.Module.Render.HudUtil;
 
 import com.cham.CosmicpingsClient;
+import com.cham.Module.Keybind;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -14,10 +15,11 @@ import java.util.Map;
 public class PingHandler {
 
     public static Map<String, PingData> data = new HashMap<>();
+    public static Map<String, PingData> deathData = new HashMap<>();
 
     private static MinecraftClient client = MinecraftClient.getInstance();
 
-    public static void onRenderWorld(MatrixStack stack, Matrix4f projectionMatrix, float tickDelta) {
+    public static void onRenderWorld(MatrixStack stack, Matrix4f projectionMatrix) {
 
         updatePings();
 
@@ -45,6 +47,8 @@ public class PingHandler {
 
         if(worldKey.equalsIgnoreCase("overworld")) {
             worldName = "Spawn";
+        }else if(worldKey.startsWith("realm_lake")) {
+            worldName = "Lake-Realm";
         }else if(worldKey.startsWith("skyblock_world")) {
             worldName = "Skyblock-Island";
         }else if(worldKey.contains("adventure_ruins-0")) {
@@ -63,15 +67,24 @@ public class PingHandler {
         return data;
     }
 
+    public static Map<String, PingData> getDeathData() {
+        return deathData;
+    }
 
     public static void updatePings() {
         ClientWorld world = client.world;
 
         if (world != null) {
+
+            int timeDespawn = 0;
+
             for (PingData ping : CosmicpingsClient.getINSTANCE().getPingList()) {
+                timeDespawn = ping.deathPing ? 180000 : 30000;
                 ping.aliveTime = Math.toIntExact(System.currentTimeMillis() - ping.spawnTime);
             }
-            CosmicpingsClient.getINSTANCE().getPingList().removeIf(pingData -> pingData.aliveTime > 30000);
+
+            int finalTimeDespawn = timeDespawn;
+            CosmicpingsClient.getINSTANCE().getPingList().removeIf(pingData -> pingData.aliveTime > finalTimeDespawn);
         }
     }
 

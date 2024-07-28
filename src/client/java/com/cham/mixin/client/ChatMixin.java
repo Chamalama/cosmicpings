@@ -10,6 +10,7 @@ import net.minecraft.client.util.TextCollector;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,6 +57,7 @@ public class ChatMixin {
             if(message.startsWith("[!]") && (isAlliance || isTruce)) {
 
                 Vector4f pingColor;
+
                 if(isTruce) {
                     pingColor = new Vector4f(0.0f, 0.9f, 0.9f, 1.0f);
                 }else{
@@ -85,21 +88,38 @@ public class ChatMixin {
 
                     Vec3d d = new Vec3d(x, y, z);
 
-                    if(PingHandler.getData().containsKey(actualName)) {
-                        PingData data = PingHandler.getData().get(actualName);
-                        CosmicpingsClient.getINSTANCE().pingList.remove(data);
-                    }
-
                     String world = PingHandler.worldName(client.player);
 
                     if(!world.equalsIgnoreCase(worldName)) {
                         return;
                     }
 
+                    PingData data;
 
-                    PingData data = new PingData(actualName, UUID.randomUUID(), d, UUID.randomUUID(), pingColor, System.currentTimeMillis());
+                    if(playerName.contains("has died")) {
 
-                    PingHandler.getData().put(actualName, data);
+                        data = new PingData(actualName, actualName, d, pingColor, System.currentTimeMillis(), true);
+
+                        if(PingHandler.getDeathData().containsKey(actualName)) {
+                            PingData deathData = PingHandler.getDeathData().get(actualName);
+                            CosmicpingsClient.getINSTANCE().pingList.remove(deathData);
+                        }
+
+                        PingHandler.getDeathData().put(actualName, data);
+
+                    } else {
+
+                        data = new PingData(actualName, actualName, d, pingColor, System.currentTimeMillis(), false);
+
+                        if (PingHandler.getData().containsKey(actualName)) {
+                            PingData normalData = PingHandler.getData().get(actualName);
+                            CosmicpingsClient.getINSTANCE().pingList.remove(normalData);
+                        }
+
+                        PingHandler.getData().put(actualName, data);
+
+                    }
+
 
                     playPingSound(client, data);
 

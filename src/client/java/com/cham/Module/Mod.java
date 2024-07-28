@@ -4,10 +4,12 @@ import net.minecraft.client.option.KeyBinding;
 
 public abstract class Mod {
 
-    protected String name, message;
+    protected String name;
+    protected String message;
     protected boolean enabled;
     protected KeyBinding keycode;
-    protected boolean shouldToggle, messageSent;
+    protected boolean shouldToggle;
+    protected boolean messageSent;
 
     public Mod(String name, KeyBinding keycode, boolean shouldToggle) {
         this.name = name;
@@ -18,11 +20,11 @@ public abstract class Mod {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
     public void setEnabled(boolean enabled) {
@@ -34,11 +36,11 @@ public abstract class Mod {
     }
 
     public KeyBinding getKeycode() {
-        return keycode;
+        return this.keycode;
     }
 
     public boolean isShouldToggle() {
-        return shouldToggle;
+        return this.shouldToggle;
     }
 
     public void toggle() {
@@ -46,27 +48,22 @@ public abstract class Mod {
     }
 
     public String getMessage() {
-        return this.getName() + " " + getEnabled(this.enabled);
+        String var10000 = this.getName();
+        return var10000 + " " + this.getEnabled(this.enabled);
     }
 
     public void onUpdate() {
-
     }
 
     public void onInfo() {
-
     }
 
     public String getEnabled(boolean enable) {
-        if(enable) {
-            return "enabled";
-        }else{
-            return "disabled";
-        }
+        return enable ? "enabled" : "disabled";
     }
 
     public void debug() {
         System.out.println(this.enabled);
     }
-
 }
+

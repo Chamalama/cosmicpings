@@ -1,13 +1,16 @@
 {
-	"required": true,
-	"package": "com.cham.mixin.client",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"ChatMixin",
-		"ClientMixin",
-		"WorldRendererMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "com.cham.mixin.client",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ChatMixin",
+    "ClientMixin",
+    "WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "DeathMixin"
+  ]
 }

@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "cosmicpings",
-	"version": "${version}",
+	"version": "1.1",
 	"name": "CosmicPings",
 	"description": "Ping mod for Cosmic.",
 	"authors": [
