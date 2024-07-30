@@ -7,5 +7,6 @@ public class DeathPing extends Mod {
 
     public DeathPing() {
         super("Death Pings", Keybind.deathPing, true);
+        this.enabled = true;
     }
 }

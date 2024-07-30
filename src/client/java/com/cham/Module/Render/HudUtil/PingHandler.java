@@ -57,6 +57,18 @@ public class PingHandler {
             worldName = "Lost-Wasteland";
         }else if(worldKey.contains("adventure_demonic_realm-0")) {
             worldName = "Demonic-Realm";
+        }else if(worldKey.contains("adventure_1_scav-0")) {
+            worldName = "Scavenger-1";
+        }else if(worldKey.contains("adventure_2_scav-0")) {
+            worldName = "Scavenger-2";
+        }else if(worldKey.contains("adventure_3_scav-0")) {
+            worldName = "Scavenger-3";
+        }else if(worldKey.contains("adventure_4_scav-0")) {
+            worldName = "Scavenger-4";
+        }else if(worldKey.contains("adventure_5_scav-0")) {
+            worldName = "Scavenger-5";
+        }else if(worldKey.contains("adventure_6_scav-0")) {
+            worldName = "Scavenger-6";
         }else{
             worldName = null;
         }
@@ -76,15 +88,11 @@ public class PingHandler {
 
         if (world != null) {
 
-            int timeDespawn = 0;
-
             for (PingData ping : CosmicpingsClient.getINSTANCE().getPingList()) {
-                timeDespawn = ping.deathPing ? 180000 : 30000;
                 ping.aliveTime = Math.toIntExact(System.currentTimeMillis() - ping.spawnTime);
             }
 
-            int finalTimeDespawn = timeDespawn;
-            CosmicpingsClient.getINSTANCE().getPingList().removeIf(pingData -> pingData.aliveTime > finalTimeDespawn);
+            CosmicpingsClient.getINSTANCE().getPingList().removeIf(pingData -> pingData.aliveTime >= pingData.despawnTime);
         }
     }
 

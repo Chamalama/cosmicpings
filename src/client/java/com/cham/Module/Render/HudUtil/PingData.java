@@ -14,17 +14,19 @@ public class PingData {
     public Vector4f screenPos;
     public long spawnTime;
     public long aliveTime;
+    public long despawnTime;
     public Vector4f color;
     public boolean deathPing;
 
 
-    public PingData(String senderName, String senderId, Vec3d pos, Vector4f color, long spawnTime, boolean deathPing) {
+    public PingData(String senderName, String senderId, Vec3d pos, Vector4f color, long spawnTime, long despawnTime, boolean deathPing) {
         this.senderName = senderName;
         this.senderId = senderId;
         this.pos = pos;
         this.spawnTime = spawnTime;
         this.color = color;
         this.deathPing = deathPing;
+        this.despawnTime = despawnTime;
         this.aliveTime = 0;
     }
 

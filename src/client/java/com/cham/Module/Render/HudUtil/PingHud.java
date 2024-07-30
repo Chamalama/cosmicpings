@@ -3,6 +3,7 @@ package com.cham.Module.Render.HudUtil;
 import com.cham.CosmicpingsClient;
 import com.cham.Module.Keybind;
 import com.cham.Module.Util.SkinHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -59,10 +60,13 @@ public class PingHud implements HudRenderCallback {
             if (distance > scaleDist && onScreen) stack.scale(1.01f, 1.01f, 1);
 
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+            RenderSystem.enableBlend();
 
             if(ping.senderId != null) {
                 if (id != null) {
-                    context.drawTexture(id, -16, -58, 33, 31, 31, 33);
+                    RenderSystem.setShaderColor(1f, 1f, 1f, 0.75F);
+                    context.drawTexture(id, -16, -58, 33, 31, 30, 30);
+                    RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
                 } else {
                     RenderSystem.setShaderColor(pingColor.x, pingColor.y, pingColor.z, pingColor.w);
                     context.drawTexture(PING_STANDARD, -4, -2, 0, 0, 8, 8, 8, 8);
@@ -72,6 +76,7 @@ public class PingHud implements HudRenderCallback {
 
             stack.scale(1.025F, 1.025F, 1.025F);
 
+            RenderSystem.setShaderColor(1f, 1f, 1f, 0.75F);
             String distanceText = String.format("%.1fm", distance);
             int distanceTextWidth = client.textRenderer.getWidth(distanceText);
 

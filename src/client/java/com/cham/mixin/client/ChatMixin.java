@@ -50,6 +50,7 @@ public class ChatMixin {
 
     @Inject(at = @At("HEAD"), method = "getRenderedChatMessage")
     private static void onChat(String message, CallbackInfoReturnable<String> cir) {
+
         MinecraftClient client = MinecraftClient.getInstance();
 
         if (client.player != null) {
@@ -90,15 +91,11 @@ public class ChatMixin {
 
                     String world = PingHandler.worldName(client.player);
 
-                    if(!world.equalsIgnoreCase(worldName)) {
-                        return;
-                    }
-
                     PingData data;
 
-                    if(playerName.contains("has died")) {
+                    if(playerName.contains("died")) {
 
-                        data = new PingData(actualName, actualName, d, pingColor, System.currentTimeMillis(), true);
+                        data = new PingData(actualName, actualName, d, pingColor, System.currentTimeMillis(), 180000, true);
 
                         if(PingHandler.getDeathData().containsKey(actualName)) {
                             PingData deathData = PingHandler.getDeathData().get(actualName);
@@ -109,11 +106,15 @@ public class ChatMixin {
 
                     } else {
 
-                        data = new PingData(actualName, actualName, d, pingColor, System.currentTimeMillis(), false);
+                        data = new PingData(actualName, actualName, d, pingColor, System.currentTimeMillis(), 30000, false);
 
                         if (PingHandler.getData().containsKey(actualName)) {
                             PingData normalData = PingHandler.getData().get(actualName);
                             CosmicpingsClient.getINSTANCE().pingList.remove(normalData);
+                        }
+
+                        if(!world.equalsIgnoreCase(worldName)) {
+                            return;
                         }
 
                         PingHandler.getData().put(actualName, data);
