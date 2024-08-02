@@ -1,6 +1,7 @@
 package com.cham.Module;
 
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.util.math.Vec3d;
 
 public abstract class Mod {
 
@@ -56,6 +57,11 @@ public abstract class Mod {
     }
 
     public void onInfo() {
+
+    }
+
+    public void onPlace() {
+
     }
 
     public String getEnabled(boolean enable) {

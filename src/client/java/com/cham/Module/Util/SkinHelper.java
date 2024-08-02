@@ -19,7 +19,9 @@ public class SkinHelper {
         MinecraftClient client = MinecraftClient.getInstance();
         if(player instanceof PlayerEntity) {
             Identifier skinTexture = client.getEntityRenderDispatcher().getRenderer(player).getTexture(player);
-            playerSkinCache.put(player.getName().getLiteralString(), skinTexture);
+            if(!playerSkinCache.containsKey(player.getName().getLiteralString())) {
+                playerSkinCache.put(player.getName().getLiteralString(), skinTexture);
+            }
         }
     }
 

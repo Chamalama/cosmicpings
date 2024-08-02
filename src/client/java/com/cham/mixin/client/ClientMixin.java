@@ -6,6 +6,8 @@ import com.cham.Module.Util.SkinHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,6 +28,7 @@ public abstract class ClientMixin {
 				}
 			}
 			for (Mod mod : CosmicpingsClient.keyMap.values()) {
+
 				if(mod.isEnabled()) {
 					mod.onUpdate();
 				}
@@ -33,7 +36,8 @@ public abstract class ClientMixin {
 					if (mod.isShouldToggle()) {
 						mod.toggle();
 						client.player.sendMessage(Text.literal(mod.getMessage().replace("Literal", "")));
-					}else{
+					}
+					if(!mod.isShouldToggle()) {
 						mod.onInfo();
 					}
 					break;

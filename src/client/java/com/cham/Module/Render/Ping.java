@@ -4,10 +4,13 @@ import com.cham.CosmicpingsClient;
 import com.cham.Module.Keybind;
 import com.cham.Module.Mod;
 import com.cham.Module.Render.HudUtil.PingHandler;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +19,11 @@ public class Ping extends Mod {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+    private boolean isPressed = false;
+
+    private long defaultTime = System.currentTimeMillis();
+
+    private Cache<UUID, Vec3d> pingPos = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MILLISECONDS).build();
 
     public Ping() {
         super("Ping", Keybind.ping, false);
@@ -27,6 +35,18 @@ public class Ping extends Mod {
         if (client.player != null) {
 
             Vec3d vec3d = client.player.getPos();
+
+
+            if (this.keycode.isPressed()) {
+                isPressed = true;
+            } else {
+                isPressed = false;
+            }
+
+            if(pingPos.asMap().containsKey(client.player.getUuid())) {
+                vec3d = pingPos.asMap().get(client.player.getUuid());;
+            }
+
             int x = (int) vec3d.x;
             int y = (int) vec3d.y;
             int z = (int) vec3d.z;
@@ -35,11 +55,10 @@ public class Ping extends Mod {
 
             String worldName = PingHandler.worldName(client.player);
 
-            if(worldName == null) {
+            if (worldName == null) {
                 client.player.sendMessage(Text.literal("This world is unavailable for pings!"));
                 return;
             }
-
 
             if (!CosmicpingsClient.cd.contains(client.player.getUuid())) {
                 client.player.networkHandler.sendCommand("c a");

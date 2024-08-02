@@ -4,10 +4,13 @@ import com.cham.CosmicpingsClient;
 import com.cham.Module.Keybind;
 import com.cham.Module.Mod;
 import com.cham.Module.Render.HudUtil.PingHandler;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +18,10 @@ import java.util.concurrent.TimeUnit;
 public class TrucePing extends Mod {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    private Cache<UUID, Vec3d> pingPos = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
+
+    private boolean isPressed;
 
 
     public TrucePing() {
@@ -28,6 +35,11 @@ public class TrucePing extends Mod {
         if (client.player != null) {
 
             Vec3d vec3d = client.player.getPos();
+
+            if(pingPos.asMap().containsKey(client.player.getUuid())) {
+                vec3d = pingPos.asMap().get(client.player.getUuid());;
+            }
+
             int x = (int) vec3d.x;
             int y = (int) vec3d.y;
             int z = (int) vec3d.z;
