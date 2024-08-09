@@ -1,11 +1,12 @@
 package com.cham.Module.Render.HudUtil;
 
 import com.cham.CosmicpingsClient;
-import com.cham.Module.Keybind;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.joml.Matrix4f;
 
@@ -19,7 +20,7 @@ public class PingHandler {
 
     private static MinecraftClient client = MinecraftClient.getInstance();
 
-    public static void onRenderWorld(MatrixStack stack, Matrix4f projectionMatrix) {
+    public static void onRenderWorld(MatrixStack stack, Matrix4f projectionMatrix, float tickCounter) {
 
         updatePings();
 
@@ -36,6 +37,26 @@ public class PingHandler {
             for (PingData ping : CosmicpingsClient.getINSTANCE().getPingList()) {
                 ping.screenPos = MathHelper.project3Dto2D(ping.pos, modelViewMatrix, projectionMatrix);
             }
+
+            var raycasted = MinecraftClient.getInstance().player.raycast(5000.0, tickCounter, false);
+
+            if (raycasted.getType() == HitResult.Type.BLOCK) {
+                var player = client.player;
+                if (player != null) {
+                    Vec3d cameraPosVec = player.getCameraPosVec(tickCounter);
+                    double distance = cameraPosVec.distanceTo(raycasted.getPos());
+                    var screenPos = MathHelper.project3Dto2D(raycasted.getPos(), stack.peek().getPositionMatrix(), projectionMatrix);
+                    PingHud.currPingPos = screenPos;
+                    PingHud.distance = distance;
+                } else {
+                    PingHud.currPingPos = null;
+                    PingHud.distance = -1;
+                }
+            } else {
+                PingHud.currPingPos = null;
+                PingHud.distance = -1;
+            }
+
         }
     }
 

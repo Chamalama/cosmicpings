@@ -18,14 +18,14 @@ public class Keybind {
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_P,
                 "Cosmic Pings"));
-        CosmicpingsClient.keyMap.put(ping, new Ping());
+        CosmicpingsClient.keyMap.put(ping, Ping.INSTANCE);
 
 
         tping = KeyBindingHelper.registerKeyBinding(new KeyBinding("Truce Ping",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_L,
                 "Cosmic Pings"));
-        CosmicpingsClient.keyMap.put(tping, new TrucePing());
+        CosmicpingsClient.keyMap.put(tping, TrucePing.INSTANCE);
 
         deathPing = KeyBindingHelper.registerKeyBinding(new KeyBinding("Death Ping",
                 InputUtil.Type.KEYSYM,

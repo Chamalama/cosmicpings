@@ -1,6 +1,8 @@
 package com.cham.Module;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 
 public abstract class Mod {
@@ -11,6 +13,7 @@ public abstract class Mod {
     protected KeyBinding keycode;
     protected boolean shouldToggle;
     protected boolean messageSent;
+    public long lastPressed;
 
     public Mod(String name, KeyBinding keycode, boolean shouldToggle) {
         this.name = name;
@@ -18,6 +21,7 @@ public abstract class Mod {
         this.keycode = keycode;
         this.shouldToggle = shouldToggle;
         this.messageSent = false;
+        this.lastPressed = 0L;
     }
 
     public String getName() {
@@ -46,6 +50,17 @@ public abstract class Mod {
 
     public void toggle() {
         this.enabled = !this.enabled;
+    }
+
+    public Vec3d pos() {
+        if (this.lastPressed != 0L && System.currentTimeMillis() - this.lastPressed > 100L) {
+            var raycasted = MinecraftClient.getInstance().player.raycast(5000.0, MinecraftClient.getInstance().getTickDelta(), false);
+            if (raycasted.getType() == HitResult.Type.BLOCK) {
+                return raycasted.getPos();
+            }
+        }
+
+        return MinecraftClient.getInstance().player.getPos();
     }
 
     public String getMessage() {

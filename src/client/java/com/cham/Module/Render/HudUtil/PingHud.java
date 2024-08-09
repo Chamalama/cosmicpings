@@ -2,6 +2,8 @@ package com.cham.Module.Render.HudUtil;
 
 import com.cham.CosmicpingsClient;
 import com.cham.Module.Keybind;
+import com.cham.Module.Render.Ping;
+import com.cham.Module.Render.TrucePing;
 import com.cham.Module.Util.SkinHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -11,6 +13,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Vec3d;
@@ -19,6 +22,9 @@ import org.joml.Vector4f;
 public class PingHud implements HudRenderCallback {
 
     private static final Identifier PING_STANDARD = Identifier.of("cosmicpings", "textures/ping_standard.png");
+
+    public static Vector4f currPingPos = null;
+    public static double distance = -1;
 
     @Override
     public void onHudRender(DrawContext context, float tickCounter) {
@@ -29,6 +35,41 @@ public class PingHud implements HudRenderCallback {
         double uiScale = client.getWindow().getScaleFactor();
         Vec3d cameraPosVec = client.player.getCameraPosVec(tickCounter);
         int scaleDist = 10;
+
+        if ((Ping.INSTANCE.lastPressed != 0L || TrucePing.INSTANCE.lastPressed != 0L) && System.currentTimeMillis() - Ping.INSTANCE.lastPressed > 100L) {
+            stack.push();
+
+            int shadowBlack = ColorHelper.Argb.getArgb(135, 0, 0, 0);
+
+            if (PingHud.currPingPos != null) {
+                var screenPos = PingHud.currPingPos;
+                Vector4f screenPos2 = screenPosWindowed(screenPos, 16, client.getWindow());
+                boolean onScreen = screenPos2 == screenPos;
+
+                stack.translate(screenPos2.x / uiScale, screenPos2.y / uiScale, 0);
+                stack.scale((float) (2 / uiScale), (float) (2 / uiScale), 1);
+                stack.scale(1.075F, 1.075F, 1.075F);
+
+                if (distance > scaleDist && onScreen) stack.scale(1.01f, 1.01f, 1);
+
+                RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+                RenderSystem.enableBlend();
+
+                stack.scale(1.025F, 1.025F, 1.025F);
+
+                RenderSystem.setShaderColor(1f, 1f, 1f, 0.75F);
+                String distanceText = "" + Formatting.GREEN + Formatting.BOLD +  "Ping";
+                int distanceTextWidth = client.textRenderer.getWidth(distanceText);
+
+                stack.translate(-distanceTextWidth / 2f, -1f, 0);
+                context.fill(-2, -2, client.textRenderer.getWidth(distanceText) + 1, client.textRenderer.fontHeight, shadowBlack);
+                context.drawTextWithShadow(client.textRenderer, distanceText, 0, 0, 0xFFA500);
+                stack.translate(distanceTextWidth / 2f, 0, 0);
+
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            }
+            stack.pop();
+        }
 
         for (PingData ping : CosmicpingsClient.getINSTANCE().pingList) {
 

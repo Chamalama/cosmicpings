@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Ping extends Mod {
 
+    public static Ping INSTANCE = new Ping();
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private boolean isPressed = false;
@@ -34,14 +36,7 @@ public class Ping extends Mod {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player != null) {
 
-            Vec3d vec3d = client.player.getPos();
-
-
-            if (this.keycode.isPressed()) {
-                isPressed = true;
-            } else {
-                isPressed = false;
-            }
+            Vec3d vec3d = pos();
 
             if(pingPos.asMap().containsKey(client.player.getUuid())) {
                 vec3d = pingPos.asMap().get(client.player.getUuid());;

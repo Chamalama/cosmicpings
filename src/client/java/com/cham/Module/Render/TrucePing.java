@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 public class TrucePing extends Mod {
 
+    public static TrucePing INSTANCE = new TrucePing();
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private Cache<UUID, Vec3d> pingPos = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
@@ -34,7 +36,7 @@ public class TrucePing extends Mod {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player != null) {
 
-            Vec3d vec3d = client.player.getPos();
+            Vec3d vec3d = pos();
 
             if(pingPos.asMap().containsKey(client.player.getUuid())) {
                 vec3d = pingPos.asMap().get(client.player.getUuid());;

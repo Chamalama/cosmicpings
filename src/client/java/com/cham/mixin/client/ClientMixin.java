@@ -28,18 +28,22 @@ public abstract class ClientMixin {
 				}
 			}
 			for (Mod mod : CosmicpingsClient.keyMap.values()) {
-
 				if(mod.isEnabled()) {
 					mod.onUpdate();
 				}
-				if (mod.getKeycode().wasPressed()) {
+
+				if (mod.getKeycode().isPressed() && !mod.getKeycode().wasPressed()) {
+					mod.lastPressed = System.currentTimeMillis();
+				} else if (mod.lastPressed > 0L && !mod.getKeycode().isPressed()) {
 					if (mod.isShouldToggle()) {
 						mod.toggle();
 						client.player.sendMessage(Text.literal(mod.getMessage().replace("Literal", "")));
-					}
-					if(!mod.isShouldToggle()) {
+						mod.lastPressed = 0L;
+					} else {
 						mod.onInfo();
+						mod.lastPressed = 0L;
 					}
+
 					break;
 				}
 			}

@@ -18,7 +18,7 @@ public class WorldRendererMixin {
 
    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderWorldBorder(Lnet/minecraft/client/render/Camera;)V", shift = At.Shift.AFTER))
     private void onRenderPostWorldBorder(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f projectionMatrix, CallbackInfo ci) {
-       PingHandler.onRenderWorld(matrices, projectionMatrix);
+       PingHandler.onRenderWorld(matrices, projectionMatrix, tickDelta);
    }
 
 }
