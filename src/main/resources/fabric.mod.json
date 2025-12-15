@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "cosmicpings",
+  "version": "1.0",
+  "name": "Cosmic Pings",
+  "description": "Ping mod for cosmic",
+  "authors": ["Mike"],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cosmicpings/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.cham.CosmicpingsClient"
+    ],
+    "main": [
+      "com.cham.Cosmicpings"
+    ]
+  },
+  "mixins": [
+    "cosmicpings.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
